@@ -26,6 +26,17 @@ const CFG = {
   victoryScore: 1_000_000,
 };
 
+// Touch devices get lower gravity so jumps hang longer — touch input
+// has higher latency than a keyboard, so a floatier arc is easier to time.
+const IS_TOUCH = typeof window !== 'undefined' &&
+  window.matchMedia &&
+  window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+if (IS_TOUCH) {
+  CFG.gravity = 0.58;
+  CFG.jumpCutGravity = 1.35;
+  CFG.jumpPower = -12.6;
+}
+
 // ============================================================
 //  Utilities
 // ============================================================
