@@ -645,9 +645,16 @@ kbd {
     border-radius: 0;
     border-width: 0;
   }
-  /* Menu screens (title, gameover, victory, pause) break out of the small
-     16:9 frame and cover the whole viewport so their content fits without
-     scrolling. Gameplay HUD still lives inside the frame. */
+}
+
+/* Menu screens (title, gameover, victory, pause) break out of the small
+   16:9 frame and cover the whole viewport so their content fits without
+   scrolling. Trigger on any small viewport — covers touch devices AND
+   in-app webviews (Messenger, Instagram) that don't reliably report
+   hover/pointer media features. Gameplay HUD still lives inside the frame. */
+@media (hover: none) and (pointer: coarse),
+       (max-width: 640px),
+       (max-height: 500px) {
   .screen {
     position: fixed;
     inset: 0;
@@ -655,9 +662,18 @@ kbd {
   }
 }
 
+@media (max-height: 640px) {
+  .instructions { gap: 0.3rem; margin-bottom: 1rem; }
+  .hint { margin-top: 0.8rem; font-size: 0.75rem; }
+  .goal { margin-top: 0.4rem; font-size: 0.7rem; }
+  .logo { font-size: clamp(2rem, 6vw, 3.2rem); margin-bottom: 0.3rem; }
+  .tagline { margin-bottom: 0.9rem; }
+}
+
 @media (max-height: 500px) {
-  .instructions { gap: 0.25rem; margin-bottom: 1rem; }
-  .hint, .goal { margin-top: 0.5rem; font-size: 0.7rem; }
-  .logo { font-size: 2.2rem; margin-bottom: 0.3rem; }
-  .tagline { margin-bottom: 0.8rem; }
+  .instructions { gap: 0.25rem; margin-bottom: 0.7rem; }
+  .hint, .goal { margin-top: 0.4rem; font-size: 0.7rem; }
+  .logo { font-size: 2rem; margin-bottom: 0.2rem; }
+  .tagline { margin-bottom: 0.6rem; font-size: 0.8rem; }
+  .btn { padding: 0.7rem 1.4rem; }
 }
