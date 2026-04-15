@@ -527,19 +527,24 @@ class Meeting extends Entity {
 // ============================================================
 //  Collectibles
 // ============================================================
+// Skills drawn from my actual resume (vagujhelyigergely.com).
+// Proficient items carry higher payouts; intermediate ones lower.
 const SKILL_POOL = [
-  { name: 'JS',    color: '#e0af68', value: 8000 },
-  { name: 'TS',    color: '#7dcfff', value: 12000 },
-  { name: 'PY',    color: '#9ece6a', value: 10000 },
-  { name: 'RS',    color: '#ff9e64', value: 18000 },
-  { name: 'GO',    color: '#7aa2f7', value: 14000 },
-  { name: 'C++',   color: '#bb9af7', value: 16000 },
-  { name: 'K8S',   color: '#7dcfff', value: 20000 },
-  { name: 'AWS',   color: '#e0af68', value: 22000 },
-  { name: 'SQL',   color: '#9ece6a', value: 9000 },
-  { name: 'GIT',   color: '#f7768e', value: 7000 },
-  { name: 'SRE',   color: '#bb9af7', value: 24000 },
-  { name: 'ML',    color: '#c678dd', value: 26000 },
+  // — proficient —
+  { name: 'JAVA',  color: '#ff9e64', value: 28000 }, // primary language, 10+ years
+  { name: 'PY',    color: '#9ece6a', value: 24000 }, // Python
+  { name: 'AI',    color: '#bb9af7', value: 30000 }, // AI application development
+  { name: 'LLM',   color: '#c678dd', value: 32000 }, // current focus: on-device LLM work
+  { name: 'SEC',   color: '#f7768e', value: 26000 }, // cryptography + data privacy
+  { name: 'SPR',   color: '#7dcfff', value: 22000 }, // Spring
+  { name: 'GIT',   color: '#e0af68', value: 10000 },
+  // — intermediate / current stack —
+  { name: 'RST',   color: '#ff9e64', value: 22000 }, // Rust
+  { name: 'GCP',   color: '#7aa2f7', value: 18000 },
+  { name: 'AZR',   color: '#7dcfff', value: 18000 }, // Azure
+  { name: 'SQL',   color: '#9ece6a', value: 14000 },
+  { name: 'RCT',   color: '#7dcfff', value: 16000 }, // React
+  { name: 'DCK',   color: '#7aa2f7', value: 16000 }, // Docker
 ];
 
 class Skill extends Entity {

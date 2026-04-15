@@ -6,7 +6,7 @@ A polished arcade game built from scratch in vanilla JavaScript — no framework
 no engine, no dependencies. Dodge rejections, collect skills, and chase the
 $1M dream job offer.
 
-**[▶ Play it live](https://your-username.github.io/game/)** _(link works after deploying — see below)_
+**[▶ Play it live](https://gergelyvagujhelyi.github.io/git-hired/)** _(link works after deploying — see below)_
 
 ![screenshot placeholder — capture one after your first playthrough and drop it here]
 
@@ -43,24 +43,12 @@ Then open `http://localhost:8000`.
 
 ## Deploy to GitHub Pages
 
-1. Push this directory to a public GitHub repo (e.g. `your-username/game`).
+1. Push this directory to a public GitHub repo.
 2. Go to **Settings → Pages**.
 3. Under **Source**, choose **Deploy from a branch**, branch `main`, folder `/ (root)`.
-4. Save. GitHub will publish to `https://your-username.github.io/game/`
-   within a minute.
+4. Save. GitHub will publish within a minute.
 
 No build step. No workflow file. No CI. It just works.
-
-## Customize before deploying
-
-Search the repo for `your-username` and `you@example.com` and replace with
-your own handles. Specifically:
-
-- `index.html` — Open Graph tags, contact links in the victory screen,
-  footer source link.
-- `README.md` — the play-live URL.
-
-That's it. The game itself is ready.
 
 ## Controls
 
