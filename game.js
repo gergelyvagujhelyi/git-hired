@@ -456,8 +456,13 @@ class RejectionLetter extends Entity {
 
 class ExperienceWall extends Entity {
   constructor(x) {
-    super(x, CFG.groundY - 88, 38, 88);
-    this.years = pick([10, 15, 20, 25, 30]);
+    const years = pick([10, 15, 20, 25, 30]);
+    // Wall height scales with years — the taller the wall, the more
+    // "experience" you have to clear. Capped so even the max is jumpable.
+    const heightByYears = { 10: 46, 15: 54, 20: 62, 25: 70, 30: 76 };
+    const h = heightByYears[years];
+    super(x, CFG.groundY - h, 38, h);
+    this.years = years;
   }
   draw(ctx) {
     const { x, y, w, h } = this;
