@@ -43,12 +43,17 @@ Then open `http://localhost:8000`.
 
 ## Deploy to GitHub Pages
 
-1. Push this directory to a public GitHub repo.
-2. Go to **Settings → Pages**.
-3. Under **Source**, choose **Deploy from a branch**, branch `main`, folder `/ (root)`.
-4. Save. GitHub will publish within a minute.
+A workflow at `.github/workflows/pages.yml` ships this to Pages on every
+push to `main`.
 
-No build step. No workflow file. No CI. It just works.
+1. Push the repo to GitHub.
+2. In **Settings → Pages**, set **Source** to **GitHub Actions**.
+3. The next push to `main` publishes the site. The workflow URL is
+   visible in the Actions tab; the live site lands at
+   `https://<user>.github.io/<repo>/`.
+
+No build step, no dependencies — the job just uploads the directory and
+tells Pages to serve it.
 
 ## Controls
 
