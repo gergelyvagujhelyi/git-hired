@@ -419,8 +419,8 @@ class Bug extends Entity {
 
 class RejectionLetter extends Entity {
   constructor(x) {
-    // Floats at head/duck height — you must duck to pass
-    super(x, CFG.groundY - 105, 52, 34);
+    // Floats at head height — must duck to pass underneath
+    super(x, CFG.groundY - 75, 52, 34);
     this.bob = rand(0, Math.PI * 2);
   }
   update(speed) { super.update(speed); this.bob += 0.09; }
@@ -494,7 +494,7 @@ class ExperienceWall extends Entity {
 class Meeting extends Entity {
   // A "this could've been an email" meeting cloud
   constructor(x) {
-    super(x, CFG.groundY - randInt(110, 150), 70, 34);
+    super(x, CFG.groundY - randInt(74, 88), 70, 34);
     this.bob = rand(0, Math.PI * 2);
   }
   update(speed) {
