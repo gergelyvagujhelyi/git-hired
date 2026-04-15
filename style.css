@@ -51,7 +51,7 @@ body {
 
 .frame {
   position: relative;
-  width: min(100%, calc((100vh - 60px) * 16 / 9));
+  width: min(100%, calc((100dvh - 60px) * 16 / 9));
   max-width: 1200px;
   aspect-ratio: 16 / 9;
   border: 1px solid var(--border);
@@ -633,6 +633,18 @@ kbd {
   .pitch-stats { grid-template-columns: 1fr; }
   .letter-stats { grid-template-columns: 1fr; }
   .footer { display: none; }
+}
+
+/* Touch devices: reclaim padding/borders so the 16:9 frame fills the viewport.
+   Biggest win is landscape mobile, where 100dvh is the limiter. */
+@media (hover: none) and (pointer: coarse) {
+  .viewport { padding: 0; }
+  .frame {
+    width: min(100vw, calc(100dvh * 16 / 9));
+    max-width: none;
+    border-radius: 0;
+    border-width: 0;
+  }
 }
 
 @media (max-height: 500px) {
