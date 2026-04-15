@@ -567,7 +567,7 @@ kbd {
   justify-content: space-between;
   gap: 1rem;
   pointer-events: none;
-  z-index: 100;
+  z-index: 1000;
 }
 
 .mobile-btn {
@@ -590,11 +590,17 @@ kbd {
   background: rgba(122, 162, 247, 0.4);
 }
 
-@media (hover: none) and (pointer: coarse) {
+/* Show mobile controls on any narrow / touch-like viewport — the plain
+   pointer/hover check misses in-app webviews (Messenger, Instagram). */
+@media (hover: none),
+       (pointer: coarse),
+       (max-width: 640px),
+       (max-height: 500px) {
   .mobile-controls {
     display: flex;
   }
-  /* Hide mobile controls whenever any menu screen is visible */
+  /* Hide them whenever a menu screen is visible so they don't overlap
+     the title/gameover/victory buttons. */
   .viewport:has(.screen:not(.hidden)) .mobile-controls {
     display: none;
   }
