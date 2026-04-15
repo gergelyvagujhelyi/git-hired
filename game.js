@@ -25,7 +25,7 @@ const CFG = {
   invincibleDuration: 75,
   slowDuration: 140,
   slowFactor: 0.55,
-  victoryScore: 1_000_000,
+  victoryScore: 500_000,
 };
 
 // Touch devices get lower gravity so jumps hang longer — touch input

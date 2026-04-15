@@ -4,7 +4,7 @@
 
 A polished arcade game built from scratch in vanilla JavaScript — no frameworks,
 no engine, no dependencies. Dodge rejections, collect skills, and chase the
-$1M dream job offer.
+$500K dream job offer.
 
 **[▶ Play it live](https://gergelyvagujhelyi.github.io/git-hired/)** _(link works after deploying — see below)_
 
@@ -13,7 +13,7 @@ $1M dream job offer.
 ## Why does this exist?
 
 I'm job hunting. Instead of another PDF resume disappearing into an ATS, I
-built something you can actually _play_ in 30 seconds. If you make it to $1M,
+built something you can actually _play_ in 30 seconds. If you make it to $500K,
 there's a message for you at the end.
 
 ## How it's made
