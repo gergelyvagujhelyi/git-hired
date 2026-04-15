@@ -500,17 +500,16 @@ class Meeting extends Entity {
     const y = this.y + Math.sin(this.bob) * 3;
     const { x, w, h } = this;
     // Cloud
-    ctx.fillStyle = '#565f89';
+    ctx.fillStyle = '#7dcfff';
     ctx.fillRect(x + 6, y + 6, w - 12, h - 12);
     ctx.fillRect(x, y + 12, w, h - 18);
     ctx.fillRect(x + 10, y, w - 20, h);
     // Text
-    ctx.fillStyle = '#c0caf5';
+    ctx.fillStyle = '#1a1b26';
     ctx.font = 'bold 8px JetBrains Mono, monospace';
     ctx.textAlign = 'center';
     ctx.fillText('MEETING', x + w / 2, y + h / 2 - 2);
     ctx.font = '6px JetBrains Mono, monospace';
-    ctx.fillStyle = '#a9b1d6';
     ctx.fillText('(could be email)', x + w / 2, y + h / 2 + 7);
     ctx.textAlign = 'left';
   }
