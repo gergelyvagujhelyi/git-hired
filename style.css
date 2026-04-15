@@ -645,6 +645,14 @@ kbd {
     border-radius: 0;
     border-width: 0;
   }
+  /* Menu screens (title, gameover, victory, pause) break out of the small
+     16:9 frame and cover the whole viewport so their content fits without
+     scrolling. Gameplay HUD still lives inside the frame. */
+  .screen {
+    position: fixed;
+    inset: 0;
+    padding: 1.5rem 1rem;
+  }
 }
 
 @media (max-height: 500px) {
