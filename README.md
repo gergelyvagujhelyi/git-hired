@@ -18,7 +18,7 @@ there's a message for you at the end.
 
 ## How it's made
 
-- **~850 lines of vanilla JavaScript.** One file, zero dependencies.
+- **~1,200 lines of vanilla JavaScript.** One file, zero dependencies.
 - **HTML5 Canvas** for rendering, parallax backgrounds, particles, and the
   developer character sprite (drawn procedurally — no assets).
 - **Web Audio API** for synthesized sound effects (no audio files).
@@ -71,11 +71,14 @@ you plow straight through obstacles.
 ## File layout
 
 ```
-game/
-├── index.html   # structure, menus, HUD
-├── style.css    # Tokyo Night themed UI
-├── game.js      # the whole game (~850 lines)
-└── README.md    # this file
+git-hired/
+├── .github/workflows/pages.yml   # CI deploy to GitHub Pages
+├── .gitignore
+├── LICENSE                       # MIT
+├── README.md                     # this file
+├── game.js                       # the whole game (~1,200 lines)
+├── index.html                    # structure, menus, HUD
+└── style.css                     # Tokyo Night themed UI
 ```
 
 ## License
