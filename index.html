@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Git Hired — The Developer Interview Simulator</title>
+  <meta name="description" content="Dodge rejections, collect skills, and survive the tech hiring gauntlet in this polished arcade game built from scratch in vanilla JavaScript.">
+  <meta property="og:title" content="Git Hired">
+  <meta property="og:description" content="An endless runner through the tech hiring process. Hire the developer or perish.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#1a1b26">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%231a1b26'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='monospace' font-size='40' font-weight='800' fill='%239ece6a'%3E%24%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="viewport">
+    <div class="frame">
+      <canvas id="game" width="960" height="540" aria-label="Git Hired game canvas"></canvas>
+
+      <!-- HUD -->
+      <div id="hud" class="hud hidden">
+        <div class="hud-row">
+          <div class="stat">
+            <span class="label">OFFER</span>
+            <span class="value" id="score">$0</span>
+          </div>
+          <div class="stat stat-center">
+            <span class="label">HOPE</span>
+            <span class="value" id="lives">♥ ♥ ♥</span>
+          </div>
+          <div class="stat stat-right">
+            <span class="label">COMBO</span>
+            <span class="value" id="combo">×1.0</span>
+          </div>
+        </div>
+        <div class="skills-bar" id="skills-bar"></div>
+      </div>
+      <div class="toast" id="toast"></div>
+
+      <!-- Title screen -->
+      <div id="title-screen" class="screen">
+        <div class="logo">
+          <span class="prompt">$</span>
+          <span class="git">git</span>
+          <span class="action">hired</span>
+          <span class="cursor">▋</span>
+        </div>
+        <p class="tagline">// an interactive resume you can't ignore</p>
+
+        <div class="instructions">
+          <div class="instruction"><kbd>SPACE</kbd><kbd>↑</kbd><span>Jump over rejections</span></div>
+          <div class="instruction"><kbd>↓</kbd><span>Duck under bad offers</span></div>
+          <div class="instruction"><kbd>P</kbd><span>Pause · </span><kbd>M</kbd><span>Mute</span></div>
+        </div>
+
+        <button class="btn btn-primary" id="start-btn">
+          <span>START INTERVIEW</span>
+          <span class="arrow">▶</span>
+        </button>
+
+        <div class="hint">
+          <span class="hint-label">pro tip:</span>
+          collect <span class="hint-coffee">☕ coffee</span> to briefly survive any hit
+        </div>
+
+        <div class="goal">
+          goal: <span class="goal-amt">$1,000,000</span> offer = dream job unlocked
+        </div>
+      </div>
+
+      <!-- Game over screen -->
+      <div id="gameover-screen" class="screen hidden">
+        <div class="letter">
+          <div class="letter-from">From: no-reply@big-tech.example</div>
+          <div class="letter-subject">Subject: Regarding your application</div>
+          <div class="letter-divider"></div>
+          <div class="letter-header">Dear candidate,</div>
+          <p class="letter-body" id="rejection-message"></p>
+          <div class="letter-signature">Best of luck in your job search!<br>— The Hiring Team</div>
+
+          <div class="letter-stats">
+            <div><span class="stat-k">Final Offer:</span> <b id="final-score">$0</b></div>
+            <div><span class="stat-k">Personal Best:</span> <b id="best-score">$0</b></div>
+            <div><span class="stat-k">Skills Collected:</span> <b id="final-skills">0</b></div>
+            <div><span class="stat-k">Time Survived:</span> <b id="final-time">0s</b></div>
+          </div>
+
+          <button class="btn btn-retry" id="retry-btn">
+            <span>TRY AGAIN</span>
+            <span class="arrow">↻</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Victory screen -->
+      <div id="victory-screen" class="screen hidden">
+        <div class="pitch">
+          <div class="pitch-header">🎉 OFFER ACCEPTED 🎉</div>
+          <div class="pitch-sub">You survived the hiring gauntlet.</div>
+
+          <p>But here's the twist: <b>this game was never about the character</b>.</p>
+
+          <p>It was built from scratch in vanilla JavaScript — no frameworks, no
+          engine, no libraries. Just an HTML canvas, a text editor, and someone
+          who enjoys shipping polished software.</p>
+
+          <p class="ask">If you enjoyed the ride — imagine what I'd ship for <b>your team</b>.</p>
+
+          <div class="contact" id="contact-links">
+            <a href="mailto:you@example.com" class="contact-link">📧 Email</a>
+            <a href="https://github.com/your-username" class="contact-link" target="_blank" rel="noopener">💻 GitHub</a>
+            <a href="https://linkedin.com/in/your-handle" class="contact-link" target="_blank" rel="noopener">🔗 LinkedIn</a>
+          </div>
+
+          <div class="pitch-stats">
+            <div><span class="stat-k">Final Offer:</span> <b id="victory-score">$1,000,000</b></div>
+            <div><span class="stat-k">Skills Collected:</span> <b id="victory-skills">0</b></div>
+            <div><span class="stat-k">Time Survived:</span> <b id="victory-time">0s</b></div>
+          </div>
+
+          <button class="btn btn-retry" id="victory-retry-btn">
+            <span>PLAY AGAIN</span>
+            <span class="arrow">↻</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Pause overlay -->
+      <div id="pause-screen" class="screen hidden">
+        <div class="pause-box">
+          <div class="pause-title">// PAUSED</div>
+          <div class="pause-hint">press <kbd>P</kbd> to resume</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile controls -->
+    <div class="mobile-controls" id="mobile-controls">
+      <button class="mobile-btn" id="jump-btn" aria-label="Jump">▲</button>
+      <button class="mobile-btn" id="duck-btn" aria-label="Duck">▼</button>
+    </div>
+
+    <footer class="footer">
+      built with vanilla JS · <a href="https://github.com/your-username/game" target="_blank" rel="noopener">source</a>
+    </footer>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>

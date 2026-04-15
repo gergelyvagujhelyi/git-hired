@@ -1,0 +1,638 @@
+:root {
+  --bg: #1a1b26;
+  --bg-dark: #0d0e14;
+  --bg-panel: #24283b;
+  --fg: #c0caf5;
+  --fg-dim: #a9b1d6;
+  --fg-dimmer: #565f89;
+  --blue: #7aa2f7;
+  --cyan: #7dcfff;
+  --green: #9ece6a;
+  --yellow: #e0af68;
+  --orange: #ff9e64;
+  --red: #f7768e;
+  --purple: #bb9af7;
+  --border: #414868;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', Menlo, Monaco, 'Courier New', monospace;
+  background: var(--bg-dark);
+  color: var(--fg);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.viewport {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(122, 162, 247, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 80%, rgba(187, 154, 247, 0.06) 0%, transparent 50%),
+    var(--bg-dark);
+  padding: 12px;
+}
+
+.frame {
+  position: relative;
+  width: min(100%, calc((100vh - 60px) * 16 / 9));
+  max-width: 1200px;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--bg);
+  box-shadow:
+    0 0 0 1px rgba(122, 162, 247, 0.1),
+    0 20px 80px rgba(0, 0, 0, 0.6),
+    0 0 120px rgba(122, 162, 247, 0.08);
+}
+
+#game {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  background: var(--bg);
+}
+
+/* ============================================================
+   Screens (title, game over, victory, pause)
+   ============================================================ */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  background: radial-gradient(ellipse at center, rgba(26, 27, 38, 0.85) 0%, rgba(13, 14, 20, 0.95) 100%);
+  backdrop-filter: blur(2px);
+  animation: screen-in 0.3s ease-out;
+}
+
+@keyframes screen-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ============================================================
+   Title screen
+   ============================================================ */
+.logo {
+  font-size: clamp(2.5rem, 7vw, 5.5rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.2em;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.logo .prompt { color: var(--fg-dimmer); }
+.logo .git { color: var(--red); }
+.logo .action { color: var(--green); }
+.logo .cursor {
+  color: var(--fg);
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.tagline {
+  color: var(--fg-dimmer);
+  font-size: clamp(0.85rem, 1.5vw, 1rem);
+  margin-bottom: 1.8rem;
+}
+
+.instructions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.8rem;
+  font-size: clamp(0.75rem, 1.3vw, 0.9rem);
+  color: var(--fg-dim);
+}
+
+.instruction {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  justify-content: center;
+}
+
+kbd {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  background: var(--bg-dark);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 0.75rem;
+  color: var(--fg);
+  box-shadow: 0 2px 0 var(--border);
+  min-width: 1.5rem;
+  text-align: center;
+}
+
+/* ============================================================
+   Buttons
+   ============================================================ */
+.btn {
+  font-family: inherit;
+  font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+  font-weight: 700;
+  padding: 0.9rem 1.8rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.1s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-family: inherit;
+}
+
+.btn-primary {
+  background: var(--green);
+  color: var(--bg-dark);
+  box-shadow: 0 4px 0 #638c3d;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 0 #638c3d;
+  filter: brightness(1.08);
+}
+
+.btn-primary:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #638c3d;
+}
+
+.btn-retry {
+  background: var(--blue);
+  color: var(--bg-dark);
+  box-shadow: 0 4px 0 #4a6cb0;
+}
+
+.btn-retry:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 0 #4a6cb0;
+  filter: brightness(1.08);
+}
+
+.btn-retry:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #4a6cb0;
+}
+
+.btn .arrow {
+  font-size: 0.9em;
+}
+
+.hint {
+  margin-top: 1.5rem;
+  font-size: 0.8rem;
+  color: var(--fg-dim);
+}
+
+.hint-label {
+  color: var(--yellow);
+}
+
+.hint-coffee {
+  color: var(--yellow);
+}
+
+.goal {
+  margin-top: 0.6rem;
+  font-size: 0.75rem;
+  color: var(--fg-dimmer);
+}
+
+.goal-amt {
+  color: var(--green);
+  font-weight: 700;
+}
+
+/* ============================================================
+   HUD
+   ============================================================ */
+.hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 0.9rem 1.4rem;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.hud-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: start;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.stat-center {
+  text-align: center;
+  align-items: center;
+}
+
+.stat-right {
+  text-align: right;
+  align-items: flex-end;
+}
+
+.stat .label {
+  font-size: 0.65rem;
+  color: var(--fg-dimmer);
+  letter-spacing: 0.15em;
+  font-weight: 600;
+}
+
+.stat .value {
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+#score { color: var(--green); }
+#lives { color: var(--red); letter-spacing: 0.15em; }
+#combo { color: var(--yellow); }
+
+.skills-bar {
+  margin-top: 0.6rem;
+  display: flex;
+  gap: 4px;
+  font-size: 0.7rem;
+  flex-wrap: wrap;
+}
+
+.skill-pill {
+  padding: 2px 6px;
+  background: rgba(158, 206, 106, 0.12);
+  border: 1px solid var(--green);
+  border-radius: 3px;
+  color: var(--green);
+  font-weight: 600;
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  animation: pill-in 0.3s ease-out;
+}
+
+@keyframes pill-in {
+  from { transform: scale(0.5); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.toast {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  opacity: 0;
+  pointer-events: none;
+  color: var(--yellow);
+  text-shadow: 0 0 20px rgba(224, 175, 104, 0.6);
+}
+
+.toast.show {
+  animation: toast 1.4s ease-out;
+}
+
+@keyframes toast {
+  0% { opacity: 0; transform: translate(-50%, -30%) scale(0.7); }
+  20% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+  30% { transform: translate(-50%, -50%) scale(1); }
+  80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -70%) scale(0.9); }
+}
+
+/* ============================================================
+   Game over / rejection letter
+   ============================================================ */
+.letter {
+  background: var(--bg);
+  border: 1px solid var(--red);
+  border-radius: 8px;
+  padding: 1.5rem 1.8rem;
+  max-width: 520px;
+  width: 100%;
+  text-align: left;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  box-shadow:
+    0 0 40px rgba(247, 118, 142, 0.2),
+    0 10px 40px rgba(0, 0, 0, 0.5);
+  animation: letter-in 0.4s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+@keyframes letter-in {
+  from { transform: translateY(20px) rotate(-0.5deg); opacity: 0; }
+  to { transform: translateY(0) rotate(0); opacity: 1; }
+}
+
+.letter-from,
+.letter-subject {
+  font-size: 0.75rem;
+  color: var(--fg-dimmer);
+  margin-bottom: 0.25rem;
+}
+
+.letter-divider {
+  border-top: 1px dashed var(--border);
+  margin: 0.8rem 0 1rem;
+}
+
+.letter-header {
+  color: var(--red);
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.8rem;
+  text-transform: uppercase;
+}
+
+.letter-body {
+  color: var(--fg-dim);
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+
+.letter-signature {
+  color: var(--fg-dimmer);
+  font-size: 0.85rem;
+  margin-bottom: 1.2rem;
+}
+
+.letter-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem 1rem;
+  padding: 0.9rem 1rem;
+  background: var(--bg-dark);
+  border-radius: 5px;
+  font-size: 0.8rem;
+  color: var(--fg-dim);
+  margin-bottom: 1.2rem;
+  border: 1px solid var(--border);
+}
+
+.letter-stats b,
+.pitch-stats b {
+  color: var(--fg);
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-k {
+  color: var(--fg-dimmer);
+}
+
+.letter .btn,
+.pitch .btn {
+  width: 100%;
+  justify-content: center;
+}
+
+/* ============================================================
+   Victory / hire pitch
+   ============================================================ */
+.pitch {
+  background: var(--bg);
+  border: 1px solid var(--green);
+  border-radius: 8px;
+  padding: 1.8rem 2rem;
+  max-width: 580px;
+  width: 100%;
+  text-align: left;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  box-shadow:
+    0 0 60px rgba(158, 206, 106, 0.25),
+    0 10px 40px rgba(0, 0, 0, 0.5);
+  animation: pitch-in 0.5s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+@keyframes pitch-in {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.pitch-header {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--green);
+  letter-spacing: 0.05em;
+  margin-bottom: 0.3rem;
+  text-align: center;
+}
+
+.pitch-sub {
+  color: var(--fg-dim);
+  font-size: 0.9rem;
+  text-align: center;
+  margin-bottom: 1.2rem;
+  font-style: italic;
+}
+
+.pitch p {
+  color: var(--fg-dim);
+  margin-bottom: 0.9rem;
+}
+
+.pitch p b {
+  color: var(--fg);
+}
+
+.pitch .ask {
+  color: var(--cyan);
+  font-size: 1rem;
+  margin-top: 1rem;
+}
+
+.pitch .ask b {
+  color: var(--green);
+}
+
+.contact {
+  display: flex;
+  justify-content: center;
+  gap: 0.6rem;
+  margin: 1.2rem 0;
+  flex-wrap: wrap;
+}
+
+.contact-link {
+  font-family: inherit;
+  padding: 0.55rem 0.9rem;
+  background: var(--bg-dark);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  color: var(--fg);
+  text-decoration: none;
+  transition: all 0.1s ease;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.contact-link:hover {
+  border-color: var(--green);
+  color: var(--green);
+  transform: translateY(-1px);
+}
+
+.pitch-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.4rem 1rem;
+  padding: 0.8rem 1rem;
+  background: var(--bg-dark);
+  border-radius: 5px;
+  font-size: 0.75rem;
+  color: var(--fg-dim);
+  margin-bottom: 1.2rem;
+  border: 1px solid var(--border);
+  text-align: center;
+}
+
+/* ============================================================
+   Pause
+   ============================================================ */
+.pause-box {
+  text-align: center;
+}
+
+.pause-title {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: 800;
+  color: var(--yellow);
+  margin-bottom: 0.8rem;
+}
+
+.pause-hint {
+  color: var(--fg-dim);
+  font-size: 0.9rem;
+}
+
+/* ============================================================
+   Mobile controls
+   ============================================================ */
+.mobile-controls {
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  right: 1rem;
+  display: none;
+  justify-content: space-between;
+  gap: 1rem;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.mobile-btn {
+  pointer-events: auto;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: rgba(65, 72, 104, 0.8);
+  border: 2px solid var(--border);
+  color: var(--fg);
+  font-size: 1.5rem;
+  font-weight: 800;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  touch-action: manipulation;
+  font-family: inherit;
+}
+
+.mobile-btn:active {
+  background: rgba(122, 162, 247, 0.4);
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .mobile-controls {
+    display: flex;
+  }
+}
+
+/* ============================================================
+   Footer
+   ============================================================ */
+.footer {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 0.7rem;
+  color: var(--fg-dimmer);
+}
+
+.footer a {
+  color: var(--fg-dim);
+  text-decoration: none;
+}
+
+.footer a:hover {
+  color: var(--cyan);
+}
+
+/* ============================================================
+   Small screens
+   ============================================================ */
+@media (max-width: 640px) {
+  .viewport { padding: 6px; }
+  .frame { border-radius: 6px; }
+  .letter, .pitch { padding: 1.1rem; }
+  .pitch-stats { grid-template-columns: 1fr; }
+  .letter-stats { grid-template-columns: 1fr; }
+  .footer { display: none; }
+}
+
+@media (max-height: 500px) {
+  .instructions { gap: 0.25rem; margin-bottom: 1rem; }
+  .hint, .goal { margin-top: 0.5rem; font-size: 0.7rem; }
+  .logo { font-size: 2.2rem; margin-bottom: 0.3rem; }
+  .tagline { margin-bottom: 0.8rem; }
+}
