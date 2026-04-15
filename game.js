@@ -23,6 +23,8 @@ const CFG = {
   spawnMin: 560,
   coffeeDuration: 320,
   invincibleDuration: 75,
+  slowDuration: 140,
+  slowFactor: 0.55,
   victoryScore: 1_000_000,
 };
 
@@ -529,7 +531,7 @@ class Meeting extends Entity {
     ctx.fillText('(could be email)', x + w / 2, y + h / 2 + 7);
     ctx.textAlign = 'left';
   }
-  get kind() { return 'obstacle'; }
+  get kind() { return 'slow'; }
   get hitbox() {
     return { x: this.x + 4, y: this.y + Math.sin(this.bob) * 3 + 4, w: this.w - 8, h: this.h - 8 };
   }
@@ -843,6 +845,7 @@ class Game {
     this.speed = CFG.baseSpeed;
     this.shake = 0;
     this.freeze = 0;
+    this.slowed = 0;
     this.lastNearMiss = 0;
 
     this.$score     = document.getElementById('score');
@@ -876,6 +879,7 @@ class Game {
     this.speed = CFG.baseSpeed;
     this.shake = 0;
     this.freeze = 0;
+    this.slowed = 0;
 
     // Pre-populate a few collectibles across the screen so the first
     // seconds aren't empty while the spawn loop ramps up.
@@ -928,7 +932,10 @@ class Game {
 
     // Speed ramp
     this.speed = Math.min(CFG.maxSpeed, CFG.baseSpeed + this.time * CFG.speedRamp);
-    const effectiveSpeed = this.player.boosted > 0 ? this.speed * 1.4 : this.speed;
+    if (this.slowed > 0) this.slowed--;
+    let effectiveSpeed = this.speed;
+    if (this.player.boosted > 0) effectiveSpeed *= 1.4;
+    else if (this.slowed > 0)    effectiveSpeed *= CFG.slowFactor;
 
     // Spawn
     this.spawnTimer -= dt;
@@ -962,6 +969,18 @@ class Game {
       } else if (e.kind === 'coffee') {
         e.dead = true;
         this.collectCoffee(e);
+      } else if (e.kind === 'slow') {
+        // Meetings slow you down instead of costing a life.
+        // Coffee lets you walk out of the meeting untouched.
+        e.dead = true;
+        if (this.player.boosted > 0) {
+          this.audio.collect();
+          this.burstParticles(e.x + e.w / 2, e.y + e.h / 2, '#7dcfff', 10);
+        } else {
+          this.slowed = CFG.slowDuration;
+          this.burstParticles(e.x + e.w / 2, e.y + e.h / 2, '#7dcfff', 14);
+          this.showToast('STUCK IN MEETING', '#7dcfff');
+        }
       } else if (e.kind === 'obstacle') {
         if (this.player.boosted > 0) {
           // Plow through with coffee
