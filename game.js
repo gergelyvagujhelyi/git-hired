@@ -461,25 +461,25 @@ class ExperienceWall extends Entity {
   }
   draw(ctx) {
     const { x, y, w, h } = this;
-    // Outer frame
-    ctx.fillStyle = '#f7768e';
-    ctx.fillRect(x, y, w, h);
+    // Yellow/black hazard sign — like a road warning
     ctx.fillStyle = '#1a1b26';
-    ctx.fillRect(x + 3, y + 3, w - 6, h - 6);
-    // Warning stripes
+    ctx.fillRect(x, y, w, h);
     ctx.fillStyle = '#e0af68';
-    for (let i = 0; i < h; i += 8) {
-      ctx.fillRect(x + 3, y + 3 + i, w - 6, 2);
-    }
-    // Rotated text
+    ctx.fillRect(x + 2, y + 2, w - 4, h - 4);
+    // Thin inner border
+    ctx.fillStyle = '#1a1b26';
+    ctx.fillRect(x + 4, y + 4, w - 8, h - 8);
+    ctx.fillStyle = '#e0af68';
+    ctx.fillRect(x + 6, y + 6, w - 12, h - 12);
+    // Rotated text (dark on yellow — high contrast)
     ctx.save();
     ctx.translate(x + w / 2, y + h / 2);
     ctx.rotate(-Math.PI / 2);
-    ctx.fillStyle = '#f7768e';
-    ctx.font = 'bold 10px JetBrains Mono, monospace';
+    ctx.fillStyle = '#1a1b26';
+    ctx.font = 'bold 11px JetBrains Mono, monospace';
     ctx.textAlign = 'center';
     ctx.fillText(`${this.years}+ YRS`, 0, -3);
-    ctx.fillText('REQUIRED', 0, 9);
+    ctx.fillText('REQUIRED', 0, 10);
     ctx.restore();
     ctx.textAlign = 'left';
   }
@@ -853,10 +853,16 @@ class Game {
     this.skills.clear();
     this.skillCount = 0;
     this.time = 0;
-    this.spawnTimer = 1200;
+    this.spawnTimer = 400;
     this.speed = CFG.baseSpeed;
     this.shake = 0;
     this.freeze = 0;
+
+    // Pre-populate a few collectibles across the screen so the first
+    // seconds aren't empty while the spawn loop ramps up.
+    this.entities.push(new Skill(CFG.width * 0.55));
+    this.entities.push(new Skill(CFG.width * 0.78));
+    this.entities.push(new Coffee(CFG.width * 0.95));
 
     this.updateHUD();
     document.getElementById('title-screen').classList.add('hidden');
