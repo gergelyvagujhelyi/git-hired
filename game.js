@@ -32,9 +32,9 @@ const IS_TOUCH = typeof window !== 'undefined' &&
   window.matchMedia &&
   window.matchMedia('(hover: none) and (pointer: coarse)').matches;
 if (IS_TOUCH) {
-  CFG.gravity = 0.58;
-  CFG.jumpCutGravity = 1.35;
-  CFG.jumpPower = -12.6;
+  CFG.gravity = 0.42;
+  CFG.jumpCutGravity = 1.0;
+  CFG.jumpPower = -11.5;
 }
 
 // ============================================================
