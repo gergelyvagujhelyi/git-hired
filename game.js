@@ -16,11 +16,11 @@ const CFG = {
   gravity: 0.75,
   jumpPower: -14.5,
   jumpCutGravity: 1.8,
-  baseSpeed: 5.5,
-  maxSpeed: 13,
-  speedRamp: 0.00035,
-  spawnBase: 1500,
-  spawnMin: 520,
+  baseSpeed: 3.2,
+  maxSpeed: 12,
+  speedRamp: 0.00018,
+  spawnBase: 1800,
+  spawnMin: 560,
   coffeeDuration: 320,
   invincibleDuration: 75,
   victoryScore: 1_000_000,
@@ -909,7 +909,7 @@ class Game {
     this.spawnTimer -= dt;
     if (this.spawnTimer <= 0) {
       this.spawn();
-      const interval = Math.max(CFG.spawnMin, CFG.spawnBase - this.time * 0.1);
+      const interval = Math.max(CFG.spawnMin, CFG.spawnBase - this.time * 0.06);
       this.spawnTimer = interval * rand(0.75, 1.25);
     }
 
