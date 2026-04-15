@@ -696,7 +696,7 @@ class Background {
   update(speed) {
     this.farBuildings.offset += speed * this.farBuildings.speed;
     this.nearBuildings.offset += speed * this.nearBuildings.speed;
-    this.groundOffset = (this.groundOffset + speed) % 40;
+    this.groundOffset = (this.groundOffset + speed) % 48;
     for (const s of this.stars) {
       s.twinkle += 0.04;
       s.x -= s.speed;
@@ -751,17 +751,16 @@ class Background {
     ctx.lineTo(CFG.width, CFG.groundY);
     ctx.stroke();
 
-    // Moving dashes
-    ctx.strokeStyle = '#7aa2f7';
-    ctx.lineWidth = 2;
-    ctx.setLineDash([24, 24]);
-    ctx.lineDashOffset = this.groundOffset;
-    ctx.beginPath();
-    ctx.moveTo(0, CFG.groundY + 24);
-    ctx.lineTo(CFG.width, CFG.groundY + 24);
-    ctx.stroke();
-    ctx.setLineDash([]);
-    ctx.lineDashOffset = 0;
+    // Moving dashes — drawn manually for smooth subpixel motion
+    ctx.fillStyle = '#7aa2f7';
+    const dashLen = 24;
+    const gapLen = 24;
+    const cycle = dashLen + gapLen;
+    let dx = -this.groundOffset;
+    while (dx < CFG.width) {
+      ctx.fillRect(dx, CFG.groundY + 23, dashLen, 2);
+      dx += cycle;
+    }
   }
 }
 
